@@ -1,43 +1,62 @@
-(() => {
-const novaTarefa = document.querySelector('[data-form-button]')
-const inputTarefa = document.querySelector('[data-form-input]')
+(() => { //Proteção do códio.
+    const novaTarefa = document.querySelector('[data-form-button]') 
 
-function criarBotaoDelete(){
-   const botaoDelete = document.createElement('span') 
-   botaoDelete.innerText = "x"
-   botaoDelete.classList = "close"
-   botaoDelete.addEventListener('click', deletarTarefa)
+    function criarBotaoDelete() { //Função que cria o botão para deletar tarefa.
+        const botaoDelete = document.createElement('span')
+        botaoDelete.innerText = "X"
+        botaoDelete.classList = "close"
 
-   return botaoDelete
+        botaoDelete.addEventListener('click', deletarTarefa)
 
-}
+        return botaoDelete
+    }
 
-function deletarTarefa(evento){
-    const botaoDeleteClicado = evento.target
-    const itemDalista = botaoDeleteClicado.parentElement 
-    itemDalista.remove()
+    function criarBotaoConcluir() { //Função para o botão de criar tarefa.
+        const botaoConcluir = document.createElement('input')
+        botaoConcluir.setAttribute('type', 'checkbox')
+        botaoConcluir.classList = "form-check-input"
 
-}
+        botaoConcluir.addEventListener('click', concluirTarefa)
 
-function criarTarefa(evento){
-    evento.preventDefault()
+        return botaoConcluir
+    }
 
-    const valorTarefa = inputTarefa.value
-    const listaDeTarefas = document.querySelector('[data-task]')
+    function deletarTarefa(evento) { //Função para deletar uma tarefa da barra.
+        const botaoDeleteClicado = evento.target
+        const itemDaLista = botaoDeleteClicado.parentElement
+        itemDaLista.remove()
+    }
 
-    novaLabel = document.createElement('label')
-    novaLabel.innerText = `-${valorTarefa}`;
-    novaLabel.className = "form-check-label"
+    function concluirTarefa(evento) { //Função que conclui a tarefa.
+        const botaoConcluirClicado = evento.target
+        const itemDaListaConcluido = botaoConcluirClicado.parentElement
+        itemDaListaConcluido.classList.toggle('tarefa_concluida')
+    }
 
-    novoItem = document.createElement('li')
-    novoItem.appendChild(novaLabel)
-    novoItem.appendChild(criarBotaoDelete())
+    function criarTarefa(evento) { //Função para criar uma nova tarefa na lista.
+        evento.preventDefault()
 
-    listaDeTarefas.appendChild(novoItem)
+        const inputTarefa = document.querySelector('[data-form-input]')
+        const valorTarefa = inputTarefa.value
+        const listaDeTarefas = document.querySelector('[data-task]')
 
-    inputTarefa.value = ""
+        novaLabel = document.createElement('label')
+        novaLabel.innerText = `- ${valorTarefa}`
+        novaLabel.className = "form-check-label"
 
-}
+        novoItem = document.createElement('li')
 
-novaTarefa.addEventListener('click', criarTarefa)
-})()  
+        novoItem.appendChild(criarBotaoConcluir())
+        novoItem.appendChild(novaLabel)
+        novoItem.appendChild(criarBotaoDelete())
+
+
+        listaDeTarefas.appendChild(novoItem)
+
+        inputTarefa.value = ""
+
+    }
+
+    novaTarefa.addEventListener('click', criarTarefa) //Chama a função criarTarefa ao apertar o botão.
+
+})()
